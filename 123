@@ -1,0 +1,57 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Threeeead
+{
+    internal class Program
+    {
+
+        public class ServerClass
+        {
+
+            public void InstanceMethod()
+            {
+                Console.WriteLine("ServerClass.InstanceMethod працює прямо зараз.");
+
+                Thread.Sleep(3000);
+                Console.WriteLine("Метод екземпляра, викликаний робочим зрiдом, закiнчився...");
+            }
+
+            public static void StaticMethod()
+            {
+                Console.WriteLine("ServerClass.StaticMethod працює прямо зараз.");
+
+                Thread.Sleep(5000);
+                Console.WriteLine("Метод екземпляра, викликаний робочим зрiдом, закiнчився....");
+            }
+        }
+
+        public class Simple
+        {
+            public static void Main()
+            {
+                ServerClass serverObject = new ServerClass();
+
+                Thread InstanceCaller = new Thread(
+                    new ThreadStart(serverObject.InstanceMethod));
+
+                InstanceCaller.Start();
+
+                Console.WriteLine("The Main() поток викликає пiсля " + "запуску нового потоку InstanceCaller");
+
+                Thread StaticCaller = new Thread(
+                    new ThreadStart(ServerClass.StaticMethod));
+
+                StaticCaller.Start();
+
+                Console.WriteLine("The Main() поток викликає пiсля " + "запуску нового потоку InstanceCaller");
+            }
+        }
+       
+    }
+}
